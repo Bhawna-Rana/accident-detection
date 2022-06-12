@@ -33,6 +33,9 @@ void loop() {
   z2 = event.acceleration.z;
   acc2 = measure_acc(x2 , y2);
   val2 = digitalRead(vibr_pin);
+  
+  //difference in acc greater than 1.3g indicates emergency braking
+  //considering z axis acceleration separately
 
   if( abs(acc1 - acc2) >= 1.3 || abs(z1 - z2) > 1 || abs(val1-val2) > 1000){
     //accident might have occured
@@ -42,6 +45,10 @@ void loop() {
     y3 = event.acceleration.y;
     z3 = event.acceleration.z;
     acc3 = measure_acc(x3 , y3);
+    
+    //low vibr == bike at rest after crash
+    //high vibr also abnormal
+    //abnormally high or low acc also indicate the same
 
     if(val3 == 0 || val3>1000 || abs(acc3) > 1.3 || abs(acc3) < 0.2 ){
       Serial.println("AAAAHHH!!!!!");
